@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import HeroSection from "./_components/hero-section";
-import { useConvexAuth } from "convex/react";
+
 
 type Props = {};
 

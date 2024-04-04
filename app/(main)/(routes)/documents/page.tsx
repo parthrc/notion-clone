@@ -2,8 +2,8 @@
 import { useConvexAuth } from "convex/react";
 import { redirect } from "next/navigation";
 import React from "react";
-import { MoonLoader } from "react-spinners";
-import { Sidebar } from "../../_components/sidebar";
+import { ClipLoader } from "react-spinners";
+
 
 type Props = {};
 
@@ -14,7 +14,7 @@ export default function DocumentsPage({}: Props) {
   if (isLoading) {
     return (
       <div className="h-full flex items-center justify-center">
-        <MoonLoader size={100} />
+        <ClipLoader size={100} />
       </div>
     );
   }

@@ -16,6 +16,7 @@ export const SidebarItem = ({
     <div
       role="button"
       className="flex items-center text-sm p-3 w-full hover:bg-primary/5 gap-x-2"
+      onClick={onClick}
     >
       <Icon className="h-5 w-5" />
       <div className="truncate">{label}</div>

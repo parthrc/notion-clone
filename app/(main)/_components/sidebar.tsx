@@ -7,6 +7,7 @@ import DocumentNavbar from "./doc-navbar";
 import { UserButton } from "@clerk/nextjs";
 import { UserItem } from "./user-item";
 import { SidebarItem } from "./sidebar-item";
+import { useSettings } from "@/hooks/use-settings";
 
 export const Sidebar = () => {
   const pathname = usePathname();
@@ -17,6 +18,8 @@ export const Sidebar = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
+  const settings = useSettings();
 
   // Collapse if on mobile or open
   useEffect(() => {
@@ -123,7 +126,11 @@ export const Sidebar = () => {
         {/* Sidebar items */}
         <div>
           <UserItem />
-          <SidebarItem label="Settings" icon={SettingsIcon} />
+          <SidebarItem
+            label="Settings"
+            icon={SettingsIcon}
+            onClick={settings.onOpen}
+          />
           <SidebarItem label="Search" icon={SearchIcon} />
           <SidebarItem label="New page" icon={PlusIcon} />
         </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/spinner";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -12,7 +13,6 @@ import {
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import { useConvexAuth } from "convex/react";
 import { ChevronsLeftRight } from "lucide-react";
-import { MoonLoader } from "react-spinners";
 
 export const UserItem = () => {
   // Get user info
@@ -27,14 +27,14 @@ export const UserItem = () => {
           role="button"
           className="flex items-center text-sm p-3 w-full hover:bg-primary/5"
         >
-          {isLoading && <MoonLoader size={25} />}
+          {isLoading && <Spinner size="sm" />}
           {!isLoading && (
             <div className="flex items-center gap-x-2 max-w-[150px]">
               <Avatar className="h-5 w-5">
                 <AvatarImage src={user?.imageUrl} />
               </Avatar>
-              <span className="text-start font-medium line-clamp-1">
-                {user?.fullName}&apos;s Protion
+              <span className="text-start font-medium line-clamp-1 ">
+                {user?.firstName}&apos;s Protion
               </span>
             </div>
           )}

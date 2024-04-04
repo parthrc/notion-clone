@@ -1,9 +1,12 @@
 import { cn } from "@/lib/utils";
-import { ChevronsLeft } from "lucide-react";
+import { ChevronsLeft, PlusIcon, SearchIcon, SettingsIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import DocumentNavbar from "./doc-navbar";
+import { UserButton } from "@clerk/nextjs";
+import { UserItem } from "./user-item";
+import { SidebarItem } from "./sidebar-item";
 
 export const Sidebar = () => {
   const pathname = usePathname();
@@ -117,7 +120,13 @@ export const Sidebar = () => {
         >
           <ChevronsLeft className="h-6 w-6" />
         </div>
-
+        {/* Sidebar items */}
+        <div>
+          <UserItem />
+          <SidebarItem label="Settings" icon={SettingsIcon} />
+          <SidebarItem label="Search" icon={SearchIcon} />
+          <SidebarItem label="New page" icon={PlusIcon} />
+        </div>
         {/* Resize anchor point */}
         <div
           onMouseDown={handleMouseDown}

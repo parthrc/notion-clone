@@ -1,9 +1,26 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { Doc } from "@/convex/_generated/dataModel";
-import { ChevronRightIcon, File, MoreHorizontal, PlusIcon } from "lucide-react";
+import { Doc, Id } from "@/convex/_generated/dataModel";
+import {
+  ChevronRightIcon,
+  File,
+  MoreHorizontal,
+  PlusIcon,
+  Trash,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
 interface DocumentItemProps {
   document: Doc<"documents">;
@@ -12,8 +29,20 @@ interface DocumentItemProps {
 export const DocumentItem = ({ document }: DocumentItemProps) => {
   const router = useRouter();
 
+  const archive = useMutation(api.documents.archiveDocument);
+
+  const handleArchive = () => {
+    const promise = archive({ id: document._id });
+
+    toast.promise(promise, {
+      loading: "Archiving document...",
+      success: "Document archived!",
+      error: "Error archiving document!",
+    });
+  };
+
   return (
-    <div className=" border flex items-center gap-x-1 p-2 ">
+    <div className=" flex items-center gap-x-1 p-2 group">
       {/* Sohw children button */}
       <div
         role="button"
@@ -33,16 +62,30 @@ export const DocumentItem = ({ document }: DocumentItemProps) => {
         </div>
       </div>
       {/* More and plus buttons */}
-      <div className="flex items-center gap-x-1">
+      <div className=" flex items-center gap-x-1">
         <div
           role="button"
-          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1"
+          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 "
         >
-          <MoreHorizontal className="h-4 w-4 shrink-0 text-muted-foreground/50" />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MoreHorizontal className="h-4 w-4 shrink-0 text-muted-foreground/50 hidden group-hover:flex" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Options</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className=" w-full flex items-center gap-x-2 cursor-pointer hover:bg-primary/5"
+                onClick={handleArchive}
+              >
+                <Trash className="h-4 w-4 text-muted-foreground" /> Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div
           role="button"
-          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1"
+          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 hidden group-hover:flex"
         >
           <PlusIcon className="h-4 w-4 shrink-0 text-muted-foreground/50" />
         </div>

@@ -26,3 +26,25 @@ export const createNewDocument = mutation({
     return document;
   },
 });
+
+export const getAllDocuments = query({
+  handler: async (ctx) => {
+    // Current user infor from the context
+    const identity = await ctx.auth.getUserIdentity();
+    // If no user then Error
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+    // Get userId from current user object
+    const userId = identity.subject;
+
+    const documents = await ctx.db
+      .query("documents")
+      .withIndex("by_user_parent", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isArchived"), false))
+      .order("desc")
+      .collect();
+
+    return documents;
+  },
+});

@@ -4,10 +4,13 @@ import { usePathname } from "next/navigation";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import DocumentNavbar from "./doc-navbar";
-import { UserButton } from "@clerk/nextjs";
 import { UserItem } from "./user-item";
 import { SidebarItem } from "./sidebar-item";
 import { useSettings } from "@/hooks/use-settings";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
+import { DocumentsList } from "./documents-list";
 
 export const Sidebar = () => {
   const pathname = usePathname();
@@ -102,6 +105,18 @@ export const Sidebar = () => {
     }
   };
 
+  // Create new document
+  const createNewDoc = useMutation(api.documents.createNewDocument);
+  const handleCreateNewDoc = () => {
+    const promise = createNewDoc({});
+
+    toast.promise(promise, {
+      loading: "Creating new document...",
+      success: "New document created successfully!",
+      error: "Error creating new document!",
+    });
+  };
+
   return (
     <>
       <aside
@@ -132,7 +147,14 @@ export const Sidebar = () => {
             onClick={settings.onOpen}
           />
           <SidebarItem label="Search" icon={SearchIcon} isSearch />
-          <SidebarItem label="New page" icon={PlusIcon} />
+          {/* Documents list here */}
+          <DocumentsList />
+
+          <SidebarItem
+            label="New page"
+            icon={PlusIcon}
+            onClick={handleCreateNewDoc}
+          />
         </div>
         {/* Resize anchor point */}
         <div

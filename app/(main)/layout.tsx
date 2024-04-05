@@ -8,11 +8,7 @@ import { redirect, useRouter } from "next/navigation";
 
 type Props = {};
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function MainLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useConvexAuth();
 
   if (isLoading) {
@@ -24,7 +20,7 @@ export default function MainLayout({
   }
   if (!isLoading && !isAuthenticated) return redirect("/");
   return (
-    <div className="h-full flex dark:bg-[#1f1f1f] ">
+    <div className="h-full flex dark:bg-[#1f1f1f]">
       <Sidebar />
       <main className="flex-1 h-full overflow-y-auto">
         <SearchCommand />
@@ -33,3 +29,5 @@ export default function MainLayout({
     </div>
   );
 }
+
+export default MainLayout;

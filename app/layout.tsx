@@ -27,7 +27,7 @@ export default function RootLayout({
           <ThemeProvider defaultTheme="system" attribute="class" enableSystem>
             {/* Provider which contains all the modals */}
             <ModalProvider />
-            <Toaster />
+            <Toaster position="bottom-center" />
             {children}
           </ThemeProvider>
         </ConvexClientProvider>

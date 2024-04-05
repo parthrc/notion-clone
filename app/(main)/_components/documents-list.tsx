@@ -1,7 +1,7 @@
 import { Spinner } from "@/components/spinner";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { SidebarItem } from "./sidebar-item";
+import { DocumentItem } from "./document-item";
 
 export const DocumentsList = () => {
   //Get all documents
@@ -15,8 +15,8 @@ export const DocumentsList = () => {
   }
 
   return (
-    <div>
-      {allDocs?.map((doc) => <SidebarItem key={doc._id} label={doc.title} />)}
+    <div >
+      {allDocs?.map((doc) => <DocumentItem key={doc._id} document={doc} />)}
     </div>
   );
 };

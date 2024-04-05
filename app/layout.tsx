@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 
 import { ConvexClientProvider } from "@/components/providers/convex-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
+import { SearchCommand } from "@/components/search-command";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
           <ThemeProvider defaultTheme="system" attribute="class" enableSystem>
             {/* Provider which contains all the modals */}
             <ModalProvider />
+            <SearchCommand />
             {children}
           </ThemeProvider>
         </ConvexClientProvider>

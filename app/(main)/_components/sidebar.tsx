@@ -131,7 +131,7 @@ export const Sidebar = () => {
             icon={SettingsIcon}
             onClick={settings.onOpen}
           />
-          <SidebarItem label="Search" icon={SearchIcon} />
+          <SidebarItem label="Search" icon={SearchIcon} isSearch />
           <SidebarItem label="New page" icon={PlusIcon} />
         </div>
         {/* Resize anchor point */}

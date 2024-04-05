@@ -11,11 +11,18 @@ export const DocumentsList = () => {
   // Convex queries are undefined when they are loading
   // we can use that behaviour to show loading state
   if (allDocs === undefined) {
-    return <Spinner size="sm" />;
+    return (
+      <div className="space-y-4 pl-8 pt-4">
+        <DocumentItem.Skeleton />
+        <DocumentItem.Skeleton />
+        <DocumentItem.Skeleton />
+        <DocumentItem.Skeleton />
+      </div>
+    );
   }
 
   return (
-    <div >
+    <div>
       {allDocs?.map((doc) => <DocumentItem key={doc._id} document={doc} />)}
     </div>
   );

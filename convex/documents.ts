@@ -115,3 +115,33 @@ export const getDocById = query({
     return existingDoc;
   },
 });
+
+export const deleteDocument = mutation({
+  args: {
+    id: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    // Current user infor from the context
+    const identity = await ctx.auth.getUserIdentity();
+    // If no user then Error
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+    // Get userId from current user object
+    const userId = identity.subject;
+
+    //Check if doc exist
+    const existingDoc = await ctx.db.get(args.id);
+    // If doc does not exist
+    if (!existingDoc) {
+      throw new Error("Not found");
+    }
+    // If user does not own the doc
+    if (existingDoc.userId !== userId) {
+      throw new Error("Not authorized");
+    }
+
+    const document = ctx.db.delete(args.id);
+    return document;
+  },
+});

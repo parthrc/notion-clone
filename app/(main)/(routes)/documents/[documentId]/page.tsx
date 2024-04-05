@@ -1,8 +1,10 @@
 "use client";
+import { Cover } from "@/app/(main)/_components/cover";
 import { Spinner } from "@/components/spinner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
+
 
 interface DocumentIdPageProps {
   params: {
@@ -33,7 +35,9 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
   return (
     <div className="h-full flex dark:bg-[#1F1F1F] text-black items-center flex-col gap-y-4">
       {/* Document header container */}
-      <div className="pt-20  w-full border px-3 h-full">{document?.title}</div>
+      <div className="pt-20 w-full h-full">
+        <Cover />
+      </div>
       {/* Document content */}
     </div>
   );

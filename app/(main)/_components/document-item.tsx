@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { Doc } from "@/convex/_generated/dataModel";
 import { ChevronRightIcon, File, MoreHorizontal, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -48,4 +49,8 @@ export const DocumentItem = ({ document }: DocumentItemProps) => {
       </div>
     </div>
   );
+};
+
+DocumentItem.Skeleton = function DocumentItemSkeleton() {
+  return <Skeleton className="w-full h-8" />;
 };

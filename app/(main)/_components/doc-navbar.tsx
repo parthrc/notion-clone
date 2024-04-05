@@ -12,10 +12,7 @@ interface DocumentNavbarProps {
   onResetWidth: () => void;
 }
 
-export default function DocumentNavbar({
-  isCollapsed,
-  onResetWidth,
-}: DocumentNavbarProps) {
+const DocumentNavbar = ({ isCollapsed, onResetWidth }: DocumentNavbarProps) => {
   const params = useParams();
   const document = useQuery(api.documents.getDocById, {
     id: params.documentId as Id<"documents">,
@@ -43,9 +40,13 @@ export default function DocumentNavbar({
           />
         )}
         <div>
-          <DocTitle document={document} />
+         
+
+            <DocTitle document={document} />
+       
         </div>
       </nav>
     </>
   );
-}
+};
+export default DocumentNavbar;

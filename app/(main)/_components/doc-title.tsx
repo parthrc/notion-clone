@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
@@ -55,6 +56,7 @@ export const DocTitle = ({ document }: DocTitleProps) => {
           onChange={onChange}
           onKeyDown={onKeyDown}
           value={title}
+          className="focus-visible:ring-transparent"
         />
       ) : (
         <Button

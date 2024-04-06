@@ -1,8 +1,5 @@
-import { api } from "@/convex/_generated/api";
-import { Doc } from "@/convex/_generated/dataModel";
-import { useMutation } from "convex/react";
-import { Trash, Undo } from "lucide-react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Id } from "@/convex/_generated/dataModel";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,19 +11,22 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
 
-interface TrashItemProps {
-  document: Doc<"documents">;
+interface ArchivedBannerProps {
+  documentId: Id<"documents">;
 }
 
-export const TrashItem = ({ document }: TrashItemProps) => {
+export const ArchivedBanner = ({ documentId }: ArchivedBannerProps) => {
   const router = useRouter();
   const restore = useMutation(api.documents.restoreDocument);
   const deleteDoc = useMutation(api.documents.deleteDocument);
 
   const handleRestore = () => {
-    const promise = restore({ documentId: document._id });
+    const promise = restore({ documentId });
 
     toast.promise(promise, {
       loading: "Restoring documents...",
@@ -36,42 +36,35 @@ export const TrashItem = ({ document }: TrashItemProps) => {
   };
 
   const handleDelete = () => {
-    const promise = deleteDoc({ documentId: document._id });
+    const promise = deleteDoc({ documentId });
+
     toast.promise(promise, {
       loading: "Deleting document permanently...",
       success: "Document deleted permanently!",
-      error: "Error dleeting document!",
+      error: "Error deleting document!",
     });
 
     router.push("/documents");
   };
 
   return (
-    <div className="flex items-center w-full rounded-sm  px-2 py-1 text-sm gap-y-1 hover:bg-neutral-800">
-      <div
-        role="button"
-        className="flex-1"
-        onClick={() => router.push(`/documents/${document._id}`)}
-      >
-        {document.title}
-      </div>
-
-      <div className="flex gap-x-1 items-center">
-        <div
-          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 p-1"
-          role="button"
+    <div className="w-full flex bg-red-500 text-white  items-center justify-center gap-x-8 h-fit py-2">
+      <div className="">This document is archived.</div>
+      <div className="flex gap-x-2">
+        <Button
+          variant="ghost"
+          className="border border-white"
+          size="sm"
           onClick={handleRestore}
         >
-          <Undo className="h-4 w-4 shrink-0 text-muted-foreground/50" />
-        </div>
+          Restore
+        </Button>
+
         <AlertDialog>
           <AlertDialogTrigger>
-            <div
-              className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 p-1"
-              role="button"
-            >
-              <Trash className="h-4 w-4 shrink-0 text-muted-foreground/50" />
-            </div>
+            <Button variant="ghost" className="border border-white" size="sm">
+              Delete
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>

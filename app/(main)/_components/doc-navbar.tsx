@@ -27,6 +27,8 @@ const DocumentNavbar = ({ isCollapsed, onResetWidth }: DocumentNavbarProps) => {
       </nav>
     );
 
+  if (document === null) return null;
+
   return (
     <>
       <nav className="bg-background dark:bg-[#1F1F1F] px-3 py-2 w-full flex items-center gap-x-4">
@@ -39,6 +41,7 @@ const DocumentNavbar = ({ isCollapsed, onResetWidth }: DocumentNavbarProps) => {
         )}
         <div className="flex items-center justify-between w-full">
           {document === null ? "" : <DocTitle document={document} />}
+
           <div className="flex items-center gap-x-2 "></div>
         </div>
       </nav>

@@ -20,6 +20,13 @@ export const DocumentsList = () => {
       </div>
     );
   }
+  if (allDocs.length < 1) {
+    return (
+      <div className="text-sm text-muted-foreground flex p-3">
+        No documents yet.
+      </div>
+    );
+  }
 
   return (
     <div>

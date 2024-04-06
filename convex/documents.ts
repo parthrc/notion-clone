@@ -153,7 +153,7 @@ export const archiveDocument = mutation({
 
 export const deleteDocument = mutation({
   args: {
-    id: v.id("documents"),
+    documentId: v.id("documents"),
   },
   handler: async (ctx, args) => {
     // Current user infor from the context
@@ -166,7 +166,7 @@ export const deleteDocument = mutation({
     const userId = identity.subject;
 
     //Check if doc exist
-    const existingDoc = await ctx.db.get(args.id);
+    const existingDoc = await ctx.db.get(args.documentId);
     // If doc does not exist
     if (!existingDoc) {
       throw new Error("Not found");
@@ -176,7 +176,7 @@ export const deleteDocument = mutation({
       throw new Error("Not authorized");
     }
 
-    const document = ctx.db.delete(args.id);
+    const document = ctx.db.delete(args.documentId);
     return document;
   },
 });
@@ -199,5 +199,35 @@ export const getAllArchivedDocuments = query({
       .collect();
 
     return archived;
+  },
+});
+
+export const restoreDocument = mutation({
+  args: {
+    documentId: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    // Current user infor from the context
+    const identity = await ctx.auth.getUserIdentity();
+    // If no user then Error
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+    // Get userId from current user object
+    const userId = identity.subject;
+
+    const archivedDoc = await ctx.db.get(args.documentId);
+
+    if (!archivedDoc) {
+      throw new Error("Document not found!");
+    }
+
+    if (archivedDoc.userId !== userId) {
+      throw new Error("Not authorized");
+    }
+
+    const doc = await ctx.db.patch(args.documentId, { isArchived: false });
+
+    return doc;
   },
 });

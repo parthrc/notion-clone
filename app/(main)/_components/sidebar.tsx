@@ -23,8 +23,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { TrashBox } from "./trash-box";
+import { useRouter } from "next/navigation";
+import { useSearch } from "@/hooks/use-search";
 
 export const Sidebar = () => {
+  const router = useRouter();
   const pathname = usePathname();
   //For resizing the sidebar
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -33,6 +36,8 @@ export const Sidebar = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
+  const openSettings = useSearch((store) => store.onOpen);
 
   const settings = useSettings();
 
@@ -120,7 +125,9 @@ export const Sidebar = () => {
   // Create new document
   const createNewDoc = useMutation(api.documents.createNewDocument);
   const handleCreateNewDoc = () => {
-    const promise = createNewDoc({});
+    const promise = createNewDoc({}).then((documentId) =>
+      router.push(`/documents/${documentId}`)
+    );
 
     toast.promise(promise, {
       loading: "Creating new document...",
@@ -158,7 +165,12 @@ export const Sidebar = () => {
             icon={SettingsIcon}
             onClick={settings.onOpen}
           />
-          <SidebarItem label="Search" icon={SearchIcon} isSearch />
+          <SidebarItem
+            label="Search"
+            icon={SearchIcon}
+            isSearch
+            onClick={openSettings}
+          />
           {/* Documents list here */}
           <DocumentsList />
 

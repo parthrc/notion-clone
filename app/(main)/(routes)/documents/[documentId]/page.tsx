@@ -1,10 +1,12 @@
 "use client";
+import { ArchivedBanner } from "@/app/(main)/_components/archived-banner";
 import { Cover } from "@/app/(main)/_components/cover";
 import { Spinner } from "@/components/spinner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { cn } from "@/lib/utils";
 import { useQuery } from "convex/react";
-
+import { useRouter } from "next/navigation";
 
 interface DocumentIdPageProps {
   params: {
@@ -13,6 +15,7 @@ interface DocumentIdPageProps {
 }
 
 export default function DocumentIdPage({ params }: DocumentIdPageProps) {
+  const router = useRouter();
   const document = useQuery(api.documents.getDocById, {
     id: params.documentId,
   });
@@ -30,15 +33,17 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
     );
   }
 
-  if (document === null) return null;
+  if (document === null) return router.push("/documents");
 
   return (
     <div className="h-full flex dark:bg-[#1F1F1F] text-black items-center flex-col gap-y-4">
-      {/* Document header container */}
-      <div className="pt-20 w-full h-full">
-        <Cover />
+      {/* Document page container */}
+      <div className="pt-20 w-full h-full border">
+        {document.isArchived && <ArchivedBanner documentId={document._id} />}
+        <div>
+          <Cover />
+        </div>
       </div>
-      {/* Document content */}
     </div>
   );
 }

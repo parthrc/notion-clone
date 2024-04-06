@@ -1,5 +1,11 @@
 import { cn } from "@/lib/utils";
-import { ChevronsLeft, PlusIcon, SearchIcon, SettingsIcon } from "lucide-react";
+import {
+  ChevronsLeft,
+  PlusIcon,
+  SearchIcon,
+  SettingsIcon,
+  Trash,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -11,6 +17,12 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { DocumentsList } from "./documents-list";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { TrashBox } from "./trash-box";
 
 export const Sidebar = () => {
   const pathname = usePathname();
@@ -155,6 +167,15 @@ export const Sidebar = () => {
             icon={PlusIcon}
             onClick={handleCreateNewDoc}
           />
+
+          <Popover>
+            <PopoverTrigger className="w-full">
+              <SidebarItem label="Trash" icon={Trash} />
+            </PopoverTrigger>
+            <PopoverContent side="right" className="w-fit">
+              <TrashBox />
+            </PopoverContent>
+          </Popover>
         </div>
         {/* Resize anchor point */}
         <div

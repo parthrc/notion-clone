@@ -90,9 +90,10 @@ export const updateDocument = mutation({
 
 export const getDocById = query({
   args: {
-    id: v.id("documents"),
+    id: v.optional(v.id("documents")),
   },
   handler: async (ctx, args) => {
+    if (!args.id) return;
     // Current user infor from the context
     const identity = await ctx.auth.getUserIdentity();
     // If no user then Error
@@ -112,6 +113,7 @@ export const getDocById = query({
     if (existingDoc.userId !== userId) {
       throw new Error("Not authorized");
     }
+
     return existingDoc;
   },
 });
@@ -176,5 +178,26 @@ export const deleteDocument = mutation({
 
     const document = ctx.db.delete(args.id);
     return document;
+  },
+});
+
+export const getAllArchivedDocuments = query({
+  handler: async (ctx) => {
+    // Current user infor from the context
+    const identity = await ctx.auth.getUserIdentity();
+    // If no user then Error
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+    // Get userId from current user object
+    const userId = identity.subject;
+
+    // Get current user's all archived posts
+    const archived = ctx.db
+      .query("documents")
+      .filter((q) => q.eq(q.field("isArchived"), true))
+      .collect();
+
+    return archived;
   },
 });

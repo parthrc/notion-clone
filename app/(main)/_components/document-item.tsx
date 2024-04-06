@@ -65,11 +65,11 @@ export const DocumentItem = ({ document }: DocumentItemProps) => {
       <div className=" flex items-center gap-x-1">
         <div
           role="button"
-          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 "
+          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 flex items-center"
         >
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <MoreHorizontal className="h-4 w-4 shrink-0 text-muted-foreground/50 hidden group-hover:flex" />
+              <MoreHorizontal className="h-4 w-4 shrink-0 text-muted-foreground/50 opacity-0 group-hover:opacity-100 flex" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Options</DropdownMenuLabel>
@@ -85,7 +85,7 @@ export const DocumentItem = ({ document }: DocumentItemProps) => {
         </div>
         <div
           role="button"
-          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 hidden group-hover:flex"
+          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 opacity-0 group-hover:opacity-100 flex"
         >
           <PlusIcon className="h-4 w-4 shrink-0 text-muted-foreground/50" />
         </div>

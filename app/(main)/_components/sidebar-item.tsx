@@ -17,7 +17,7 @@ export const SidebarItem = ({
   return (
     <div
       role="button"
-      className="flex items-center text-sm p-3 w-full hover:bg-primary/5 gap-x-2"
+      className="flex items-center text-sm p-3 w-full hover:bg-primary/5 gap-x-2 font-medium"
       onClick={onClick}
     >
       {Icon ? <Icon className="h-5 w-5" /> : <File className="h-4 w-4" />}

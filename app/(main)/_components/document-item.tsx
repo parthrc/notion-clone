@@ -133,6 +133,15 @@ export const DocumentItem = ({
   );
 };
 
-DocumentItem.Skeleton = function DocumentItemSkeleton() {
-  return <Skeleton className="w-full h-8" />;
+DocumentItem.Skeleton = function DocumentItemSkeleton({
+  level,
+}: {
+  level?: number;
+}) {
+  return (
+    <Skeleton
+      style={{ paddingLeft: level ? `${level * 12 + 25}px` : "12px" }}
+      className="w-full h-6"
+    />
+  );
 };

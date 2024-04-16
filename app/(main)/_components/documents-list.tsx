@@ -37,9 +37,12 @@ export const DocumentsList = ({
     return (
       <div className="space-y-4 pl-8 pt-4">
         <DocumentItem.Skeleton />
-        <DocumentItem.Skeleton />
-        <DocumentItem.Skeleton />
-        <DocumentItem.Skeleton />
+        {level === 0 && (
+          <>
+            <DocumentItem.Skeleton level={level} />
+            <DocumentItem.Skeleton level={level} />
+          </>
+        )}
       </div>
     );
   }

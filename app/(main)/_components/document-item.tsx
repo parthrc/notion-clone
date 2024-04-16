@@ -3,6 +3,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import {
+  ChevronDown,
+  ChevronRight,
   ChevronRightIcon,
   File,
   MoreHorizontal,
@@ -24,13 +26,22 @@ import { toast } from "sonner";
 
 interface DocumentItemProps {
   document: Doc<"documents">;
+  level?: number;
+  onExpand?: () => void;
+  expanded?: boolean;
 }
 
-export const DocumentItem = ({ document }: DocumentItemProps) => {
+export const DocumentItem = ({
+  document,
+  onExpand,
+  level,
+  expanded,
+}: DocumentItemProps) => {
   const router = useRouter();
 
   const archive = useMutation(api.documents.archiveDocument);
 
+  // handle archving
   const handleArchive = () => {
     const promise = archive({ id: document._id });
 
@@ -41,12 +52,39 @@ export const DocumentItem = ({ document }: DocumentItemProps) => {
     });
   };
 
+  const createNewDoc = useMutation(api.documents.createNewDocument);
+  const handleCreateNewDoc = () => {
+    const promise = createNewDoc({ parentDocumentId: document._id }).then(
+      (documentId) => router.push(`/documents/${documentId}`)
+    );
+
+    toast.promise(promise, {
+      loading: "Creating new document...",
+      success: "New document created successfully!",
+      error: "Error creating new document!",
+    });
+  };
+
+  // Handle expansion
+  const handleExpand = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    onExpand?.();
+  };
+
+  const ChevronIcon = expanded ? ChevronDown : ChevronRight;
+
   return (
-    <div className=" flex items-center gap-x-1 p-2 group">
+    <div
+      className=" flex items-center gap-x-1 p-2 group "
+      style={{ paddingLeft: level ? `${level * 12 + 12}px` : "12px" }}
+    >
       {/* Sohw children button */}
       <div
         role="button"
         className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1"
+        onClick={handleExpand}
       >
         <ChevronRightIcon className="h-4 w-4 shrink-0 text-muted-foreground/50" />
       </div>
@@ -86,6 +124,7 @@ export const DocumentItem = ({ document }: DocumentItemProps) => {
         <div
           role="button"
           className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 opacity-0 group-hover:opacity-100 flex"
+          onClick={handleCreateNewDoc}
         >
           <PlusIcon className="h-4 w-4 shrink-0 text-muted-foreground/50" />
         </div>

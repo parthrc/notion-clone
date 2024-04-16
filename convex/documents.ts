@@ -28,7 +28,10 @@ export const createNewDocument = mutation({
 });
 
 export const getAllDocuments = query({
-  handler: async (ctx) => {
+  args: {
+    parentDocument: v.optional(v.id("documents")),
+  },
+  handler: async (ctx, args) => {
     // Current user infor from the context
     const identity = await ctx.auth.getUserIdentity();
     // If no user then Error
@@ -40,7 +43,9 @@ export const getAllDocuments = query({
 
     const documents = await ctx.db
       .query("documents")
-      .withIndex("by_user_parent", (q) => q.eq("userId", userId))
+      .withIndex("by_user_parent", (q) =>
+        q.eq("userId", userId).eq("parentDocument", args.parentDocument)
+      )
       .filter((q) => q.eq(q.field("isArchived"), false))
       .order("desc")
       .collect();

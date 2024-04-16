@@ -47,7 +47,7 @@ export const TrashItem = ({ document }: TrashItemProps) => {
   };
 
   return (
-    <div className="flex items-center w-full rounded-sm  px-2 py-1 text-sm gap-y-1 hover:bg-neutral-800">
+    <div className="flex items-center w-full rounded-sm  px-2 py-1 text-sm gap-y-1 dark:hover:bg-neutral-800 hover:bg-neutral-200">
       <div
         role="button"
         className="flex-1"

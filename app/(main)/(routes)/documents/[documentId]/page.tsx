@@ -1,10 +1,11 @@
 "use client";
 import { ArchivedBanner } from "@/app/(main)/_components/archived-banner";
 import { Cover } from "@/app/(main)/_components/cover";
+import Editor from "@/components/blocknote-editor";
 import { Spinner } from "@/components/spinner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 
 interface DocumentIdPageProps {
@@ -19,7 +20,14 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
     id: params.documentId,
   });
 
-  console.log(document);
+  const update = useMutation(api.documents.updateDocument);
+
+  const handleEditorUpdate = (content: string) => {
+    update({
+      id: params.documentId,
+      content,
+    });
+  };
 
   // While page loads
   // ! Change to Skeleton
@@ -39,8 +47,12 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
       {/* Document page container */}
       <div className="pt-20 w-full h-full border">
         {document.isArchived && <ArchivedBanner documentId={document._id} />}
-        <div>
-          <Cover />
+        <Cover />
+        <div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-6">
+          <Editor
+            onChange={handleEditorUpdate}
+            initialContent={document.content}
+          />
         </div>
       </div>
     </div>

@@ -159,8 +159,6 @@ export const archiveDocument = mutation({
         )
         .collect();
 
-      console.log(childrenDocs);
-
       // Archive all children
       for (const child of childrenDocs) {
         await ctx.db.patch(child._id, {
@@ -258,7 +256,31 @@ export const restoreDocument = mutation({
       throw new Error("Not authorized");
     }
 
+    // Restore doc and all its children
+    async function recursiveRestore(documentId: Id<"documents">) {
+      //Get all children
+      const childrenDocs = await ctx.db
+        .query("documents")
+        .withIndex("by_user_parent", (q) =>
+          q.eq("userId", userId).eq("parentDocument", documentId)
+        )
+        .collect();
+
+      // Restore all children
+      for (const child of childrenDocs) {
+        await ctx.db.patch(child._id, {
+          isArchived: false,
+        });
+
+        // call recursiveRestore on all children
+        await recursiveRestore(child._id);
+      }
+    }
+    // Restore main document
     const doc = await ctx.db.patch(args.documentId, { isArchived: false });
+
+    //Call recursive fucntion
+    await recursiveRestore(args.documentId);
 
     return doc;
   },

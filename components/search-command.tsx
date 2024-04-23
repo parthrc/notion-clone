@@ -14,6 +14,7 @@ import { useSearch } from "@/hooks/use-search";
 
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 export const SearchCommand = () => {
   //Search store
@@ -26,9 +27,10 @@ export const SearchCommand = () => {
   const [search, searchResults] = useState("");
 
   const { user } = useUser();
+  const router = useRouter();
 
-  const allDocs = useQuery(api.documents.getAllDocuments);
-  const archivedDocs = allDocs?.filter((doc) => doc.isArchived === true);
+  const allDocs = useQuery(api.documents.getAllDocuments, {});
+  const archivedDocs = useQuery(api.documents.getAllArchivedDocuments);
 
   useEffect(() => {
     const keyDown = (e: KeyboardEvent) => {
@@ -49,15 +51,15 @@ export const SearchCommand = () => {
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Documents">
-          <CommandItem>Calendar</CommandItem>
-          <CommandItem>Search Emoji</CommandItem>
-          <CommandItem>Calculator</CommandItem>
+          {allDocs?.map((doc, index) => (
+            <CommandItem key={index}>{doc.title}</CommandItem>
+          ))}
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Trash">
-          <CommandItem>Profile</CommandItem>
-          <CommandItem>Billing</CommandItem>
-          <CommandItem>Settings</CommandItem>
+          {archivedDocs?.map((doc, index) => (
+            <CommandItem key={index}>{doc.title}</CommandItem>
+          ))}
         </CommandGroup>
       </CommandList>
     </CommandDialog>

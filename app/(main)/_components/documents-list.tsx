@@ -54,12 +54,12 @@ export const DocumentsList = ({
           paddingLeft: level ? `${level * 12 + 25}px` : undefined,
         }}
         className={cn(
-          "hidden text-sm font-medium text-muted-foreground/80",
+          " ml-4 hidden text-sm font-medium text-muted-foreground/80",
           expanded && "last:block",
           level === 0 && "hidden"
         )}
       >
-        No pages inside
+        No pages yet.
       </p>
       {allDocs?.map((doc) => (
         <div key={doc._id}>

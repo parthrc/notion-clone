@@ -1,3 +1,4 @@
+import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -148,11 +149,37 @@ export const archiveDocument = mutation({
       throw new Error("Not authorized");
     }
 
-    const document = await ctx.db.patch(args.id, {
+    // Archive doc and all its children
+    async function recursiveArchive(documentId: Id<"documents">) {
+      // Get all children of current doc
+      const childrenDocs = await ctx.db
+        .query("documents")
+        .withIndex("by_user_parent", (q) =>
+          q.eq("userId", userId).eq("parentDocument", documentId)
+        )
+        .collect();
+
+      console.log(childrenDocs);
+
+      // Archive all children
+      for (const child of childrenDocs) {
+        await ctx.db.patch(child._id, {
+          isArchived: true,
+        });
+        // Call recursive fucntion on each children
+        await recursiveArchive(child._id);
+      }
+    }
+
+    // Finally archive the main document
+    const archive = await ctx.db.patch(args.id, {
       isArchived: true,
     });
 
-    return document;
+    // Call recursive function
+    recursiveArchive(args.id);
+
+    return archive;
   },
 });
 

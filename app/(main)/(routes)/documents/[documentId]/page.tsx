@@ -4,7 +4,6 @@ import { Cover } from "@/app/(main)/_components/cover";
 import { Spinner } from "@/components/spinner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { cn } from "@/lib/utils";
 import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 

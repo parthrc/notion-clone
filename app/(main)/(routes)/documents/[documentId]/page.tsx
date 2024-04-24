@@ -47,7 +47,7 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
       {/* Document page container */}
       <div className="pt-20 w-full h-full border">
         {document.isArchived && <ArchivedBanner documentId={document._id} />}
-        <CoverImage />
+        <CoverImage imageUrl={document.coverImage} />
         <div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-6">
           <Editor
             onChange={handleEditorUpdate}

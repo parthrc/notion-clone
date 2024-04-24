@@ -8,6 +8,12 @@ import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Cancel } from "@radix-ui/react-alert-dialog";
 import { useEdgeStore } from "@/lib/edgestore";
+import { updateDocument } from "@/convex/documents";
+import { useUser } from "@clerk/nextjs";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { useParams } from "next/navigation";
 
 const ALLOWED_IMAGE_TYPES = [
   "image/webp",
@@ -17,10 +23,12 @@ const ALLOWED_IMAGE_TYPES = [
 ];
 
 export const CoverImageUploadModal = () => {
-  const [file, setFile] = useState<File | null>(null);
-
+  const [file, setFile] = useState<File | null>();
+  const params = useParams();
   const coverImage = useCoverImage();
   const { edgestore } = useEdgeStore();
+  const { user } = useUser();
+  const update = useMutation(api.documents.updateDocument);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     // If files exist select the first one
@@ -36,11 +44,36 @@ export const CoverImageUploadModal = () => {
     if (file && !ALLOWED_IMAGE_TYPES.includes(file.type)) {
       return toast.error("Select an IMAGE only!");
     }
-    if (file && ALLOWED_IMAGE_TYPES) {
-      // Upload to edgestore
-      const res = await edgestore.publicFiles.upload({ file });
-      console.log(res);
+    if (file && ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      try {
+        // Upload to edgestore
+        const res = await edgestore.publicFiles.upload({
+          file,
+          options: {
+            replaceTargetUrl: coverImage.url,
+          },
+        });
+
+        if (res && user) {
+          await update({
+            id: params.documentId as Id<"documents">,
+            coverImage: res.url,
+          });
+        }
+      } catch (error) {
+        toast.error("Error uploading image");
+      } finally {
+        toast.success("Image uploaded successfully");
+
+        coverImage.onClose();
+      }
     }
+  };
+
+  const onClose = () => {
+    setFile(undefined);
+
+    coverImage.onClose();
   };
 
   return (
@@ -62,7 +95,7 @@ export const CoverImageUploadModal = () => {
           <Button onClick={handleUpload} type="submit">
             Upload
           </Button>
-          <Button>Cancel</Button>
+          <Button onClick={onClose}>Cancel</Button>
         </div>
       </DialogContent>
     </Dialog>

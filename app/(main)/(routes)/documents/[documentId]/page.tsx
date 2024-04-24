@@ -1,7 +1,7 @@
 "use client";
 import { ArchivedBanner } from "@/app/(main)/_components/archived-banner";
-import { Cover } from "@/app/(main)/_components/cover";
 import Editor from "@/components/blocknote-editor";
+import CoverImage from "@/components/cover-image";
 import { Spinner } from "@/components/spinner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -47,7 +47,7 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
       {/* Document page container */}
       <div className="pt-20 w-full h-full border">
         {document.isArchived && <ArchivedBanner documentId={document._id} />}
-        <Cover />
+        <CoverImage />
         <div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-6">
           <Editor
             onChange={handleEditorUpdate}

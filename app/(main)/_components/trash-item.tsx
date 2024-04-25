@@ -14,7 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface TrashItemProps {
   document: Doc<"documents">;
@@ -24,6 +24,8 @@ export const TrashItem = ({ document }: TrashItemProps) => {
   const router = useRouter();
   const restore = useMutation(api.documents.restoreDocument);
   const deleteDoc = useMutation(api.documents.deleteDocument);
+  const pathName = usePathname();
+  console.log(pathName);
 
   const handleRestore = () => {
     const promise = restore({ documentId: document._id });
@@ -40,7 +42,7 @@ export const TrashItem = ({ document }: TrashItemProps) => {
     toast.promise(promise, {
       loading: "Deleting document permanently...",
       success: "Document deleted permanently!",
-      error: "Error dleeting document!",
+      error: "Error deleting document!",
     });
 
     router.push("/documents");

@@ -7,6 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
+import { document } from "postcss";
 
 interface DocumentIdPageProps {
   params: {
@@ -47,12 +48,13 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
       {/* Document page container */}
       <div className=" w-full h-full border">
         {document.isArchived && <ArchivedBanner documentId={document._id} />}
-        <CoverImage preview={false} imageUrl={document.coverImage} />
-        <div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-6">
-          <Editor
-            onChange={handleEditorUpdate}
-            initialContent={document.content}
-          />
+        <CoverImage preview imageUrl={document.coverImage} />
+        <div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-6 flex flex-col items-start ">
+          <h1 className="text-black dark:text-white text-5xl ml-[3.3rem] mb-4">
+            {document.title}
+          </h1>
+
+          <Editor preview editable={false} initialContent={document.content} />
         </div>
       </div>
     </div>

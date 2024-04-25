@@ -7,9 +7,10 @@ import { useTheme } from "next-themes";
 import { useEdgeStore } from "@/lib/edgestore";
 
 interface EditorProps {
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
+  preview?: boolean;
 }
 
 type BlockNoteEditorOptions = {
@@ -21,9 +22,9 @@ type BlockNoteEditorOptions = {
 
 // Our <Editor> component we can reuse later
 export default function Editor({
-  onChange,
   initialContent,
   editable,
+  preview,
 }: EditorProps) {
   // to upload image files in the document
   const { edgestore } = useEdgeStore();
@@ -46,12 +47,21 @@ export default function Editor({
   // Creates a new editor instance.
   const editor = useCreateBlockNote(options);
 
+  if (preview) {
+    return (
+      <BlockNoteView
+        editor={editor}
+        editable={editable}
+        theme={resolvedTheme === "dark" ? "dark" : "light"}
+      />
+    );
+  }
+
   // Renders the editor instance using a React component.
   return (
     <BlockNoteView
       editor={editor}
-      editable
-      onChange={() => onChange(JSON.stringify(editor.document))}
+      editable={editable}
       theme={resolvedTheme === "dark" ? "dark" : "light"}
       formattingToolbar
       linkToolbar

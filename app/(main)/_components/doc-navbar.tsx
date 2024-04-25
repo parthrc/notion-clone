@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import PublishButton from "./publish-button";
 
 interface DocumentNavbarProps {
   isCollapsed: boolean;
@@ -54,7 +55,7 @@ const DocumentNavbar = ({ isCollapsed, onResetWidth }: DocumentNavbarProps) => {
 
   return (
     <>
-      <nav className="bg-background dark:bg-[#1F1F1F] px-3 py-2 w-full flex items-center gap-x-4">
+      <nav className="bg-background dark:bg-[#1F1F1F] p-4 w-full flex items-center gap-x-4">
         {isCollapsed && (
           <MenuIcon
             role="button"
@@ -65,7 +66,8 @@ const DocumentNavbar = ({ isCollapsed, onResetWidth }: DocumentNavbarProps) => {
         <div className="flex items-center justify-between w-full">
           {document === null ? "" : <DocTitle document={document} />}
 
-          <div className="flex items-center gap-x-2 " role="button">
+          <div className="flex items-center gap-x-4 ">
+            <PublishButton initialData={document} />
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <MoreHorizontal className="h-6 w-6 mr-2 shrink-0 dark:text-white dark:hover:bg-neutral-500 text-black opacity-100  flex hover:bg-neutral-200 rounded-md" />

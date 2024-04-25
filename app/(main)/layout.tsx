@@ -5,6 +5,9 @@ import { SearchCommand } from "@/components/search-command";
 import { useConvexAuth } from "convex/react";
 import { Spinner } from "@/components/spinner";
 import { redirect, useRouter } from "next/navigation";
+import { ConvexClientProvider } from "@/components/providers/convex-provider";
+import { Toaster } from "sonner";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 type Props = {};
 
@@ -23,8 +26,11 @@ function MainLayout({ children }: { children: React.ReactNode }) {
     <div className="h-full flex dark:bg-[#1f1f1f]">
       <Sidebar />
       <main className="flex-1 h-full overflow-y-auto">
-        <SearchCommand />
-        {children}
+
+     
+          <SearchCommand />
+          {children}
+ 
       </main>
     </div>
   );

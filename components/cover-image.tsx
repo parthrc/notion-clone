@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 interface CoverImageProps {
   imageUrl?: string;
-  preview?: boolean;
+  preview: boolean;
 }
 
 export default function CoverImage({ imageUrl, preview }: CoverImageProps) {
@@ -87,6 +87,18 @@ export default function CoverImage({ imageUrl, preview }: CoverImageProps) {
           >
             <ImageIcon /> Add cover
           </Button>
+        </div>
+      )}
+
+      {/* If image exists and preview */}
+      {!!imageUrl && preview && (
+        <div>
+          <Image
+            src={imageUrl}
+            fill
+            alt="cover-image"
+            className="object-cover"
+          ></Image>
         </div>
       )}
     </div>

@@ -54,7 +54,12 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
             {document.title}
           </h1>
 
-          <Editor preview editable={false} initialContent={document.content} />
+          <Editor
+            onChange={() => {}}
+            preview
+            editable={false}
+            initialContent={document.content}
+          />
         </div>
       </div>
     </div>

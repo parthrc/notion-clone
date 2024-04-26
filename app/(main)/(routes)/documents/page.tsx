@@ -41,7 +41,7 @@ export default function DocumentsPage({}: Props) {
   }
   return (
     <div className="h-full flex dark:bg-[#1F1F1F] text-black items-center justify-center flex-col gap-y-4">
-      <Image src="/questions-bro.png" alt="landing" height={300} width={300} />
+      <Image src="/Questions-bro.png" alt="landing" height={300} width={300} />
       <div>
         <Button className="flex gap-x-1" onClick={handleCreateNewDoc}>
           Create new document <Plus className="h-4 w-4" />

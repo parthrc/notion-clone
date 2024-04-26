@@ -140,7 +140,7 @@ export const Sidebar = () => {
     <>
       <aside
         className={cn(
-          "group/sidebar h-full bg-background overflow-y-auto relative flex w-60 flex-col z-[99999]",
+          "group/sidebar h-full bg-slate-50 dark:bg-background overflow-y-auto relative flex w-60 flex-col z-[99999]",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "w-0"
         )}

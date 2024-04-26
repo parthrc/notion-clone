@@ -1,3 +1,4 @@
+import { boolean } from "zod";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
@@ -100,6 +101,17 @@ export const getDocById = query({
   },
   handler: async (ctx, args) => {
     if (!args.id) return;
+
+    //Check if doc exist
+    const existingDoc = await ctx.db.get(args.id);
+    // If doc does not exist
+    if (!existingDoc) {
+      throw new Error("Not found");
+    }
+
+    if (existingDoc.isPublished) {
+      return existingDoc;
+    }
     // Current user infor from the context
     const identity = await ctx.auth.getUserIdentity();
     // If no user then Error
@@ -109,12 +121,6 @@ export const getDocById = query({
     // Get userId from current user object
     const userId = identity.subject;
 
-    //Check if doc exist
-    const existingDoc = await ctx.db.get(args.id);
-    // If doc does not exist
-    if (!existingDoc) {
-      throw new Error("Not found");
-    }
     // If user does not own the doc
     if (existingDoc.userId !== userId) {
       throw new Error("Not authorized");
@@ -237,7 +243,7 @@ export const restoreDocument = mutation({
     documentId: v.id("documents"),
   },
   handler: async (ctx, args) => {
-    // Current user infor from the context
+    // Current user info from the context
     const identity = await ctx.auth.getUserIdentity();
     // If no user then Error
     if (!identity) {
@@ -283,5 +289,37 @@ export const restoreDocument = mutation({
     await recursiveRestore(args.documentId);
 
     return doc;
+  },
+});
+
+export const removeCoverImage = mutation({
+  args: {
+    documentId: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    // Current user info from the context
+    const identity = await ctx.auth.getUserIdentity();
+    // If no user then Error
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+    // Get userId from current user object
+    const userId = identity.subject;
+    const currentDocument = await ctx.db.get(args.documentId);
+
+    if (!currentDocument) {
+      throw new Error("Document not found!");
+    }
+
+    if (currentDocument.userId !== userId) {
+      throw new Error("Not authorized");
+    }
+
+    //Delete link from convex
+    const document = await ctx.db.patch(args.documentId, {
+      coverImage: undefined,
+    });
+
+    return document;
   },
 });

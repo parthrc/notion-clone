@@ -1,13 +1,17 @@
-This is a clone of a popular note taking app Notion made for educational purposes.
-It is developed using Nextjs, TailwindCSS, Shadcnui for styling, Convex for the backend, Clerk for authentication, & Edgestore for storing images.
-I tried to amke it as close to the original as possible in terms of style and features.
-It has following features so far:
-1. Ability to add, update, delete and preview documents with live database.(thanks convex)
-2. Ability to upload images in documents.
-3. Ability to create unlimited child documents.
-4. Ability to archive documents.
-5. Dark mode toggle. (thanks shadcnui).
-6. Same editor as the one in Notion built using [Blocknote](https://www.blocknotejs.org/)
+# Protion a Notion clone.
+## Demo [here](#)
+This is a clone of a popular note taking app Notion made for educational purposes. It is developed using Nextjs, tailwindcss & shadcnui for styling, [Convex](https://www.convex.dev/) for the backend, [Clerk](https://clerk.com/) for authentication, & [Edgestore](https://edgestore.dev/) for storing images. 
+I tried to make it as close to the original as possible in terms of style and features.
+
+### It has the following features so far:
+- Ability to create, update, delete pages with live database thanks to Convex.
+- Ability to upload images in the pages using edgestore.
+- Can create infinite child pages.
+- Can archive and publish pages to share on the internet.
+- Dark mode toggle.
+- Same editor as the one in Notion built using [Blocknote](https://www.blocknotejs.org/)
+
+
 
 
 

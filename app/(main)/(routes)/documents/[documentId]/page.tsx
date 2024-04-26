@@ -23,6 +23,7 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
   const update = useMutation(api.documents.updateDocument);
 
   const handleEditorUpdate = (content: string) => {
+    console.log("Update func called");
     update({
       id: params.documentId,
       content,

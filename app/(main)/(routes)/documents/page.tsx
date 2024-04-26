@@ -5,7 +5,7 @@ import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useMutation } from "convex/react";
 import { Plus } from "lucide-react";
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
@@ -14,11 +14,14 @@ type Props = {};
 export default function DocumentsPage({}: Props) {
   // Get auth info from convex
   const { isAuthenticated, isLoading } = useConvexAuth();
+  const router = useRouter();
 
   // Create new document
   const createNewDoc = useMutation(api.documents.createNewDocument);
   const handleCreateNewDoc = () => {
-    const promise = createNewDoc({});
+    const promise = createNewDoc({}).then((documentId) =>
+      router.push(`/documents/${documentId}`)
+    );
 
     toast.promise(promise, {
       loading: "Creating new document...",

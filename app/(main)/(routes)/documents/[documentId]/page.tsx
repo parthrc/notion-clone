@@ -6,6 +6,7 @@ import { Spinner } from "@/components/spinner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 
 interface DocumentIdPageProps {
@@ -20,10 +21,13 @@ export default function DocumentIdPage({ params }: DocumentIdPageProps) {
     id: params.documentId,
   });
 
+  // const Editor = dynamic(() => import("@/components/blocknote-editor"), {
+  //   ssr: false,
+  // });
+
   const update = useMutation(api.documents.updateDocument);
 
   const handleEditorUpdate = (content: string) => {
-    console.log("Update func called");
     update({
       id: params.documentId,
       content,

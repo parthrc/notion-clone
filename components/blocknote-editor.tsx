@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 import { useEdgeStore } from "@/lib/edgestore";
 
 interface EditorProps {
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
   preview?: boolean;
@@ -25,6 +25,7 @@ export default function Editor({
   initialContent,
   editable,
   preview,
+  onChange,
 }: EditorProps) {
   // to upload image files in the document
   const { edgestore } = useEdgeStore();
@@ -37,6 +38,7 @@ export default function Editor({
     return res.url;
   };
   const { resolvedTheme } = useTheme();
+
   //Set options for blocknote editor
   const options: BlockNoteEditorOptions = {
     initialContent: initialContent
@@ -44,6 +46,7 @@ export default function Editor({
       : undefined,
     uploadFile: handleImageUpload,
   };
+
   // Creates a new editor instance.
   const editor = useCreateBlockNote(options);
 
@@ -69,6 +72,7 @@ export default function Editor({
       slashMenu
       imageToolbar
       tableHandles
+      onChange={() => onChange(JSON.stringify(editor.document))}
     />
   );
 }
